@@ -1,0 +1,96 @@
+[
+{
+  "model": "coffee.sitesettings",
+  "pk": 1,
+  "fields": {
+    "site_name": "Naisha Coffee",
+    "logo": "",
+    "favicon": "",
+    "hero_badge": "Best Coffee In Town",
+    "hero_title": "Best Coffee",
+    "hero_subtitle": "Make your day great with our special coffee!",
+    "hero_description": "Welcome to our coffee paradise, where every bean tells a story and every cup sparks joy.",
+    "hero_image": "",
+    "hero_button_text": "Order Now",
+    "hero_button_link": "#menu",
+    "hero_secondary_button_text": "Contact Us",
+    "hero_secondary_button_link": "#contact",
+    "about_title": "Our Story",
+    "about_text": "Naisha Coffee started as a small neighbourhood roastery with one promise: every cup should feel like a warm hug. Today we source ethically grown beans, roast them in small batches, and serve them with care in a cozy, modern space designed for slow mornings and good conversations.",
+    "about_image": "branding/owner.png",
+    "years_experience": 6,
+    "cups_served": 85000,
+    "happy_customers": 15000,
+    "address": "House 12, Road 5, Gulshan, Dhaka, Bangladesh",
+    "phone": "+880 1711 000000",
+    "email": "hello@naishacoffee.com",
+    "opening_hours": "Mon – Sun: 8:00 AM – 10:00 PM",
+    "map_embed_url": "",
+    "delivery_fee": "60.00",
+    "facebook_url": "https://www.facebook.com/",
+    "instagram_url": "https://www.instagram.com/_chaosoracle_?igsh=MTdma2twZXMybWN5bA==",
+    "whatsapp_url": "https://wa.me/8801711000000",
+    "youtube_url": "https://www.youtube.com/",
+    "twitter_url": "",
+    "footer_text": "Brewed with love, served with a smile.",
+    "copyright_text": "© Naisha Coffee. All rights reserved."
+  }
+},
+{
+  "model": "coffee.branch",
+  "pk": 1,
+  "fields": {
+    "name": "Naisha Coffee Gulshan",
+    "area": "Gulshan, Dhaka",
+    "address": "House 12, Road 5, Gulshan-1, Dhaka 1212",
+    "photo": "branches/gulshan.jpg",
+    "phone": "+880 1711 001100",
+    "opening_hours": "Mon – Sun: 8:00 AM – 10:00 PM",
+    "order": 0
+  }
+},
+{
+  "model": "coffee.branch",
+  "pk": 2,
+  "fields": {
+    "name": "Naisha Coffee Banani",
+    "area": "Banani, Dhaka",
+    "address": "Road 11, Block C, Banani, Dhaka 1213",
+    "photo": "branches/banani.jpg",
+    "phone": "+880 1711 002200",
+    "opening_hours": "Mon – Sun: 8:00 AM – 10:00 PM",
+    "order": 1
+  }
+},
+{
+  "model": "coffee.branch",
+  "pk": 3,
+  "fields": {
+    "name": "Naisha Coffee Mirpur",
+    "area": "Mirpur, Dhaka",
+    "address": "Section 10, Main Road, Mirpur, Dhaka 1216",
+    "photo": "branches/mirpur.jpeg",
+    "phone": "+880 1711 003300",
+    "opening_hours": "Mon – Sun: 8:00 AM – 10:00 PM",
+    "order": 2
+  }
+},
+{
+  "model": "coffee.branch",
+  "pk": 4,
+  "fields": {
+    "name": "Naisha Coffee Mohammadpur",
+    "area": "Mohammadpur, Dhaka",
+    "address": "Nabodoy Housing, Road 3, Mohammadpur, Dhaka 1207",
+    "photo": "branches/mohammadpur.jpg",
+    "phone": "+880 1711 004400",
+    "opening_hours": "Mon – Sun: 8:00 AM – 10:00 PM",
+    "order": 3
+  }
+},
+{
+  "model": "coffee.menucategory",
+  "pk": 1,
+  "fields": {
+    "name": "Hot Coffee",
+    "icon": 
