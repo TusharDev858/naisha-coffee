@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Testimonials | {{ site.site_name }}{% endblock %}
+{% block content %}
+
+<section class="page-banner">
+  <div class="section-content">
+    <h1>Testimonials</h1>
+    <p>Hear what our community has to say</p>
+  </div>
+</section>
+
+<section class="testimonials-preview-section">
+  <div class="section-content">
+    <div class="testimonial-grid">
+      {% for t in testimonials %}
+      <div class="testimonial-card">
+        <div class="stars">
+          {% for s in t.stars_range %}★{% endfor %}{% for s in t.empty_stars_range %}☆{% endfor %}
+        </div>
+        <p class="testimonial-message">“{{ t.message }}”</p>
+        <div class="testimonial-person">
+          {% if t.photo %}<img src="{{ t.photo.url }}" alt="{{ t.name }}">{% endif %}
+          <div>
+            <h4>{{ t.name }}</h4>
+            {% if t.role %}<span>{{ t.role }}</span>{% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+        <p class="empty-state">Customer reviews will be shown here once added from the admin panel.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="section-content cta-flex">
+    <div>
+      <h2>Loved your visit?</h2>
+      <p>Tell us about your experience — we'd love to feature your review here.</p>
+    </div>
+    <a href="{% url 'contact' %}" class="button order-now">Share Feedback</a>
+  </div>
+</section>
+
+{% endblock %}

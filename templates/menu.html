@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Menu | {{ site.site_name }}{% endblock %}
+{% block content %}
+
+<section class="page-banner">
+  <div class="section-content">
+    <span class="section-tag">Order Online</span>
+    <h1>Our Menu</h1>
+    <p>Freshly brewed, freshly baked — tap any item to add it to your cart</p>
+  </div>
+</section>
+
+<section class="full-menu-section">
+  <div class="section-content">
+
+    {% if categories %}
+    <div class="menu-tabs">
+      {% for category in categories %}
+        <a href="#cat-{{ category.id }}" class="menu-tab">{{ category.icon }} {{ category.name }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for category in categories %}
+    <div class="menu-category" id="cat-{{ category.id }}">
+      <h2 class="menu-category-title">{{ category.icon }} {{ category.name }}</h2>
+      <div class="menu-list-grid">
+        {% for item in category.items.all %}
+          {% if item.is_available %}
+          <div class="menu-list-card"
+               data-item-id="{{ item.id }}"
+               data-item-name="{{ item.name }}"
+               data-item-price="{{ item.price }}"
+               data-item-img="{% if item.image %}{{ item.image.url }}{% else %}{% static 'img/Naisha.png' %}{% endif %}"
+               data-item-desc="{{ item.description }}">
+            <div class="menu-card-img js-open-order">
+              {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+              {% else %}
+                <img src="{% static 'img/Naisha.png' %}" alt="{{ item.name }}">
+              {% endif %}
+              {% if item.is_featured %}<span class="badge-popular">Popular</span>{% endif %}
+              <span class="menu-card-hover">Click to order</span>
+            </div>
+            <div class="menu-card-body">
+              <div class="menu-card-top">
+                <h3>{{ item.name }}</h3>
+                <span class="price">৳{{ item.price }}</span>
+              </div>
+              {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+              <button type="button" class="add-cart-btn js-open-order">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                Add to Cart
+              </button>
+            </div>
+          </div>
+          {% endif %}
+        {% empty %}
+          <p class="empty-state">No items in this category yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% empty %}
+      <p class="empty-state">The menu will appear here once categories and items are added from the admin panel.</p>
+    {% endfor %}
+
+  </div>
+</section>
+
+<!-- ===== ORDER MODAL ===== -->
+<div class="order-modal-overlay" id="orderModal">
+  <div class="order-modal">
+    <button type="button" class="order-modal-close" id="modalCloseBtn" aria-label="Close">&times;</button>
+    <img id="modalImg" src="" alt="" class="modal-img">
+    <div class="modal-body">
+      <h3 id="modalName"></h3>
+      <p id="modalDesc" class="modal-desc"></p>
+      <div class="modal-price-row">
+        <span class="modal-price" id="modalPrice"></span>
+        <div class="qty-selector">
+          <button type="button" id="qtyMinus" aria-label="Decrease">−</button>
+          <span id="modalQty">1</span>
+          <button type="button" id="qtyPlus" aria-label="Increase">+</button>
+        </div>
+      </div>
+      <form method="post" id="addToCartForm">
+        {% csrf_token %}
+        <input type="hidden" name="quantity" id="modalQtyInput" value="1">
+        <button type="submit" class="button order-now modal-add-btn">Add to Cart — ৳<span id="modalTotal"></span></button>
+      </form>
+      <a href="{% url 'cart' %}" class="modal-view-cart">View Cart & Checkout →</a>
+    </div>
+  </div>
+</div>
+
+<section class="cta-section">
+  <div class="section-content cta-flex">
+    <div>
+      <h2>Ready to checkout?</h2>
+      <p>Review your cart and place your order for delivery or pickup.</p>
+    </div>
+    <a href="{% url 'cart' %}" class="button order-now">View Cart</a>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  var currentQty = 1;
+  var currentPrice = 0;
+
+  var modal      = document.getElementById('orderModal');
+  var modalName  = document.getElementById('modalName');
+  var modalDesc  = document.getElementById('modalDesc');
+  var modalPrice = document.getElementById('modalPrice');
+  var modalImg   = document.getElementById('modalImg');
+  var modalQty   = document.getElementById('modalQty');
+  var qtyInput   = document.getElementById('modalQtyInput');
+  var modalTotal = document.getElementById('modalTotal');
+  var form       = document.getElementById('addToCartForm');
+
+  function openModal(card) {
+    currentQty = 1;
+    currentPrice = parseFloat(card.getAttribute('data-item-price'));
+    modalName.textContent  = card.getAttribute('data-item-name');
+    modalDesc.textContent  = card.getAttribute('data-item-desc') || '';
+    modalPrice.textContent = '৳' + card.getAttribute('data-item-price');
+    modalImg.src           = card.getAttribute('data-item-img');
+    modalQty.textContent   = '1';
+    qtyInput.value         = '1';
+    modalTotal.textContent = currentPrice.toFixed(2);
+    form.action = '/cart/add/' + card.getAttribute('data-item-id') + '/';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function changeQty(delta) {
+    currentQty = Math.max(1, currentQty + delta);
+    modalQty.textContent = currentQty;
+    qtyInput.value = currentQty;
+    modalTotal.textContent = (currentPrice * currentQty).toFixed(2);
+  }
+
+  // Attach open handlers to every menu card trigger
+  document.querySelectorAll('.js-open-order').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var card = el.closest('.menu-list-card');
+      if (card) openModal(card);
+    });
+  });
+
+  var closeBtn = document.getElementById('modalCloseBtn');
+  var minusBtn = document.getElementById('qtyMinus');
+  var plusBtn  = document.getElementById('qtyPlus');
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (minusBtn) minusBtn.addEventListener('click', function () { changeQty(-1); });
+  if (plusBtn)  plusBtn.addEventListener('click', function () { changeQty(1); });
+
+  // Close when clicking the dark overlay (but not the modal box)
+  if (modal) {
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeModal();
+  });
+})();
+</script>
+{% endblock %}

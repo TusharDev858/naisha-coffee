@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Your Cart | {{ site.site_name }}{% endblock %}
+{% block content %}
+
+<section class="page-banner">
+  <div class="section-content">
+    <span class="section-tag">Your Order</span>
+    <h1>Shopping Cart</h1>
+    <p>Review your items before checkout</p>
+  </div>
+</section>
+
+<section class="cart-section">
+  <div class="section-content">
+    {% if cart_items %}
+    <div class="cart-layout">
+      <div class="cart-items">
+        {% for line in cart_items %}
+        <div class="cart-item">
+          <div class="cart-item-img">
+            {% if line.item.image %}
+              <img src="{{ line.item.image.url }}" alt="{{ line.item.name }}">
+            {% else %}
+              <img src="{% static 'img/Naisha.png' %}" alt="{{ line.item.name }}">
+            {% endif %}
+          </div>
+          <div class="cart-item-info">
+            <h3>{{ line.item.name }}</h3>
+            <span class="cart-item-price">৳{{ line.item.price }} each</span>
+          </div>
+          <form method="post" action="{% url 'update_cart' line.item.id %}" class="cart-qty-form">
+            {% csrf_token %}
+            <button type="submit" name="action" value="decrease" class="qty-btn">−</button>
+            <span class="qty-num">{{ line.qty }}</span>
+            <button type="submit" name="action" value="increase" class="qty-btn">+</button>
+          </form>
+          <div class="cart-item-total">৳{{ line.line_total }}</div>
+          <form method="post" action="{% url 'update_cart' line.item.id %}">
+            {% csrf_token %}
+            <button type="submit" name="action" value="remove" class="cart-remove" aria-label="Remove">&times;</button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="cart-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row"><span>Subtotal</span><span>৳{{ subtotal }}</span></div>
+        <div class="summary-row"><span>Delivery Fee</span><span>৳{{ delivery_fee }}</span></div>
+        <div class="summary-row summary-total"><span>Total</span><span>৳{{ total }}</span></div>
+        <a href="{% url 'checkout' %}" class="button order-now checkout-btn">Proceed to Checkout</a>
+        <a href="{% url 'menu' %}" class="continue-shopping">← Continue Shopping</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+      <div class="empty-cart-icon">🛒</div>
+      <h2>Your cart is empty</h2>
+      <p>Looks like you haven't added anything yet. Explore our menu and find something you'll love!</p>
+      <a href="{% url 'menu' %}" class="button order-now">Browse Menu</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

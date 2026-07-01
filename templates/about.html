@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}About Us | {{ site.site_name }}{% endblock %}
+{% block content %}
+
+<section class="page-banner">
+  <div class="section-content">
+    <span class="section-tag">Get To Know Us</span>
+    <h1>About Naisha Coffee</h1>
+    <p>The story, the passion, and the people behind every cup</p>
+  </div>
+</section>
+
+<section class="about-preview-section">
+  <div class="section-content about-flex">
+    <div class="about-img-wrapper">
+      {% if site.about_image %}
+        <img src="{{ site.about_image.url }}" alt="Naisha — Founder" class="owner-photo">
+      {% else %}
+        <img src="{% static 'img/owner.png' %}" alt="Naisha — Founder" class="owner-photo">
+      {% endif %}
+      <div class="owner-badge">
+        <span class="owner-name">Naisha</span>
+        <span class="owner-title">Founder & Creative Director</span>
+      </div>
+    </div>
+    <div class="about-details">
+      <span class="section-tag">Our Story</span>
+      <h2 class="section-title">{{ site.about_title }}</h2>
+      <p>{{ site.about_text }}</p>
+      <div class="about-links">
+        <a href="{% url 'menu' %}" class="button order-now">See Our Menu</a>
+        {% if site.instagram_url %}
+        <a href="{{ site.instagram_url }}" target="_blank" rel="noopener" class="button contact-us insta-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg> Follow Naisha
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="section-content stats-grid">
+    <div class="stat-box"><h3>{{ site.years_experience }}+</h3><p>Years Experience</p></div>
+    <div class="stat-box"><h3>{{ site.cups_served }}+</h3><p>Cups Served</p></div>
+    <div class="stat-box"><h3>{{ site.happy_customers }}+</h3><p>Happy Customers</p></div>
+    <div class="stat-box"><h3>{{ branches|length }}</h3><p>Locations</p></div>
+  </div>
+</section>
+
+{% if team %}
+<section class="team-section">
+  <div class="section-content">
+    <div class="section-heading">
+      <span class="section-tag">Meet The Team</span>
+      <h2 class="section-title">The People Behind Your Coffee</h2>
+    </div>
+    <div class="team-grid">
+      {% for member in team %}
+      <div class="team-card">
+        {% if member.photo %}
+          <img src="{{ member.photo.url }}" alt="{{ member.name }}">
+        {% else %}
+          <img src="{% static 'img/Naisha.png' %}" alt="{{ member.name }}">
+        {% endif %}
+        <h3>{{ member.name }}</h3>
+        <span class="team-role">{{ member.role }}</span>
+        {% if member.bio %}<p>{{ member.bio }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if branches %}
+<section class="branches-section">
+  <div class="section-content">
+    <div class="section-heading">
+      <span class="section-tag">Find Us</span>
+      <h2 class="section-title">Our Branches</h2>
+    </div>
+    <div class="branches-grid">
+      {% for branch in branches %}
+      <div class="branch-card">
+        <div class="branch-img">
+          {% if branch.photo %}<img src="{{ branch.photo.url }}" alt="{{ branch.name }}" loading="lazy">{% endif %}
+          <div class="branch-img-overlay"><span class="branch-area-badge">📍 {{ branch.area }}</span></div>
+        </div>
+        <div class="branch-info">
+          <h3>{{ branch.name }}</h3>
+          <p class="branch-address">{{ branch.address }}</p>
+          {% if branch.phone %}<p class="branch-detail">📞 {{ branch.phone }}</p>{% endif %}
+          {% if branch.opening_hours %}<p class="branch-detail">🕒 {{ branch.opening_hours }}</p>{% endif %}
+          <a href="{% url 'contact' %}" class="branch-cta">Get Directions →</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="cta-section">
+  <div class="section-content cta-flex">
+    <div><h2>Want to know more?</h2><p>We'd love to hear from you — drop us a message any time.</p></div>
+    <a href="{% url 'contact' %}" class="button order-now">Contact Us</a>
+  </div>
+</section>
+{% endblock %}

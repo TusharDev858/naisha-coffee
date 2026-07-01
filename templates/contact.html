@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contact | {{ site.site_name }}{% endblock %}
+{% block content %}
+
+<section class="page-banner">
+  <div class="section-content">
+    <h1>Contact Us</h1>
+    <p>We'd love to hear from you</p>
+  </div>
+</section>
+
+<section class="contact-section">
+  <div class="section-content contact-flex">
+
+    <div class="contact-info-card">
+      <h2>Get In Touch</h2>
+      <p>Have a question, feedback, or a catering request? Send us a message and our team will get back to you shortly.</p>
+      <ul class="contact-info-list">
+        <li><strong>📍 Address</strong><span>{{ site.address }}</span></li>
+        <li><strong>📞 Phone</strong><span>{{ site.phone }}</span></li>
+        <li><strong>✉️ Email</strong><span>{{ site.email }}</span></li>
+        {% if site.opening_hours %}<li><strong>🕒 Hours</strong><span>{{ site.opening_hours }}</span></li>{% endif %}
+      </ul>
+      <div class="social-links">
+        {% if site.facebook_url %}<a href="{{ site.facebook_url }}" target="_blank" rel="noopener">Facebook</a>{% endif %}
+        {% if site.instagram_url %}<a href="{{ site.instagram_url }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+        {% if site.twitter_url %}<a href="{{ site.twitter_url }}" target="_blank" rel="noopener">Twitter</a>{% endif %}
+        {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>{% endif %}
+      </div>
+    </div>
+
+    <form class="contact-form" method="post">
+      {% csrf_token %}
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+      </div>
+      <input type="text" name="subject" placeholder="Subject">
+      <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+      <button type="submit" class="button order-now">Send Message</button>
+    </form>
+
+  </div>
+
+  {% if site.map_embed_url %}
+  <div class="section-content map-wrapper">
+    <iframe src="{{ site.map_embed_url }}" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock %}

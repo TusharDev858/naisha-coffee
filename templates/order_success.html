@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Order Confirmed | {{ site.site_name }}{% endblock %}
+{% block content %}
+
+<section class="order-success-section">
+  <div class="section-content">
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h1>Order Confirmed!</h1>
+      <p class="success-sub">Thank you, {{ order.customer_name }}! Your order has been received.</p>
+      <div class="order-number-badge">Order #{{ order.order_number }}</div>
+
+      <div class="order-details-box">
+        <div class="od-row"><span>Status</span><span class="od-status">{{ order.get_status_display }}</span></div>
+        <div class="od-row"><span>Payment</span><span>{{ order.get_payment_method_display }}</span></div>
+        <div class="od-row"><span>Phone</span><span>{{ order.phone }}</span></div>
+        {% if order.branch %}<div class="od-row"><span>Branch</span><span>{{ order.branch.name }}</span></div>{% endif %}
+        <div class="od-row"><span>Delivery to</span><span>{{ order.address }}</span></div>
+      </div>
+
+      <div class="order-items-box">
+        <h3>Order Items</h3>
+        {% for item in order.items.all %}
+        <div class="osuccess-item">
+          <span>{{ item.quantity }}× {{ item.item_name }}</span>
+          <span>৳{{ item.line_total }}</span>
+        </div>
+        {% endfor %}
+        <div class="summary-row"><span>Subtotal</span><span>৳{{ order.subtotal }}</span></div>
+        <div class="summary-row"><span>Delivery Fee</span><span>৳{{ order.delivery_fee }}</span></div>
+        <div class="summary-row summary-total"><span>Total</span><span>৳{{ order.total }}</span></div>
+      </div>
+
+      <p class="success-contact">We'll call you shortly on <strong>{{ order.phone }}</strong> to confirm your order.
+      {% if site.whatsapp_url %}<br>Questions? <a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener">WhatsApp us</a>.{% endif %}</p>
+
+      <div class="success-actions">
+        <a href="{% url 'menu' %}" class="button order-now">Order More</a>
+        <a href="{% url 'home' %}" class="button contact-us success-home-btn">Back to Home</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
